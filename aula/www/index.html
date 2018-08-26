@@ -1,44 +1,57 @@
 <!DOCTYPE html>
-
 <html>
     <head>
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <link rel="stylesheet" type="text/css" href="css/index.css">
-        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-        <title>Hello World</title>
+        <title>VAO</title>
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+        <script type="text/javascript">
+            document.addEventListener("deviceready", onDeviceReady, false);
+
+            function onDeviceReady(){
+                var db = window.openDatabase("Database","1.0","BancoVAO",2000000);
+                db.transaction(populateDB, errorCB, successCB);
+            }
+            function populateDB(tx){
+                tx.executeSql('DROP TABLE IF EXISTS AnimVAO');
+                tx.executeSql('CREATE TABLE AnimVAO(id INTEGER PRIMARY KEY ASC, animes)');
+                tx.executeSql('INSERT INTO AnimVAO(id, animes) VALUES(1,"https://www.blogger.com/video-play.mp4?contentId=1e2d5b3167d47567")');
+                tx.executeSql('INSERT INTO AnimVAO(id, animes) VALUES(2,"https://www.blogger.com/video-play.mp4?contentId=1e2d5b3167d47567")');
+            }
+            function errorCB(err){
+                alert("erro: "+err.code)
+            }
+            function successCB(){
+                alert("Sucesso");
+            }
+            function show(){
+                var db = window.openDatabase("Database","1.0","BancoVAO",2000000);
+                db.transaction(mostrarCadastro,errorCB)
+            }
+            function mostrarCadastro(tx){
+                tx.executeSql('SELECT * FROM AnimVAO', [], sucesso, errorCB)
+            }
+            function sucesso(tx, results){
+                var len = results.rows.length;
+                alert(len+" linhas encontradas");
+                for (var i = 0; i<len; i++) {
+                    //alert("ID: "+results.rows.item(i).id + " Link: "+results.rows.item(i).animes);
+                    document.getElementById('aparece').innerHTML += "<br>ID: "+results.rows.item(i).id + " <video width='320' height='240' controls><source src='"+results.rows.item(i).animes+"' type='video/mp4'Your browser does not support the video tag.</video>";
+                }
+            }
+            function esconder(){
+                document.getElementById('aparece').innerHTML = "";
+            }
+        </script>
     </head>
     <body>
-        <div id="telalogin" class="page">
 
-            <div class="painel-login">
-                <div class="painel-herder">
-                    <img class="fotoLogin" src="img/login.png">
-                </div>
-                <input type="text" class="form-login" placeholder="Insira seu login">
-                <input type="password" class="form-login" placeholder="Insira sua senha">
-                <div>   <a href="tela2.html">Teste</a>
-                    <button class="btn btn-primary">Entrar</button>
-                    <button class="btn btn-success">Criar conta</button>
-                </div>
-
-            </div>
-        </div>
-        <div id="telausuario" class="hidden page"> 
-            <div class="navbar"><span>Bem Vindo Jean Gabriel</span> </div>
-            <div class="conteudo">
-                <ul class="lista">
-                    <li class="item-lista">Jean Gabriel</li>
-                    <li class="item-lista">Joao Pedro</li>
-                    <li class="item-lista">Saulo Uasabi</li>
-                </ul>
-            </div>
-            <button class="btnfooter">Cadastrar novo Usuario</button>
-        </div>
-        <div id="telaload" class="hidden page">
-           <img class="img-load"src="img/cubeload.svg">
-        </div>
+    <h1>OLLLAAAA WORLDD</h1>
+    <button onclick="show()">Mostrar</button>
+    <button onclick="esconder()">Esconder</button>
+    <div id="aparece">
+        
+    </div>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
     </body>
