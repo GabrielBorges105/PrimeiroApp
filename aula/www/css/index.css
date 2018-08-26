@@ -1,0 +1,109 @@
+*{
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+.hidden{
+    display: none;
+}
+.page{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+#telalogin{
+    background: url("../img/fundo.jpg");
+    background-size: cover;
+}
+#telausuario{
+    background: #f0f0f0;
+}
+#telaload{
+    background: rgba(1,0,1,0.8);
+    z-index: 9999;
+    color: white;
+}
+.navbar{
+    background: #2c3e50;
+    width: 100%;
+    height: 55px;
+    text-align: center;
+    border-bottom: 2px solid orange;
+    text-transform: uppercase;
+}
+.navbar span{
+    font-size: 17px;
+    line-height: 55px;
+    color: white;
+}
+.btnfooter{
+    position: fixed;
+    width: 100%;
+    padding:15px 0px;
+    text-align: center;
+    background: #222;
+    color: white;
+    bottom:0;
+    border:0;
+    text-transform: uppercase;
+}
+.lista{
+    list-style-type: none;
+    padding: 0;
+    background: white;
+}
+.item-lista{
+    display: block;
+    padding: 15px 5px;
+
+    border-bottom: 1px solid #bbb;
+}
+.painel-login{
+    width: 85%;
+    background: rgba(2,1,1,0.7);
+    margin: 15px auto;
+    padding: 15px 5%;
+    border-radius: 5px;
+}
+.form-login{
+width: 90%;
+margin-bottom: 10px; 
+padding: 15px 5%; 
+border: 1px solid #bbb;
+border-radius: 2px;
+}
+.painel-herder{
+    text-align: center;
+    margin-bottom: 5px;
+}
+.fotoLogin{
+    width: 50%;
+    height: 50%;
+}
+*:focus{
+    outline: 0;
+}
+.btn{
+    width: auto;
+    padding: 10px 25px;
+    border: 0;
+    border-radius: 2px;
+    text-transform: uppercase;
+}
+.btn-primary{
+    background: #0383C5;
+    color: white;
+}
+.btn-success{
+    background: #069040;
+    color: white;
+}
+.img-load{
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -50px;
+}
