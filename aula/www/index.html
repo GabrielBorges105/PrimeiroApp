@@ -1,58 +1,288 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>VAO</title>
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-        <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-        <script type="text/javascript">
-            document.addEventListener("deviceready", onDeviceReady, false);
-
-            function onDeviceReady(){
-                var db = window.openDatabase("Database","1.0","BancoVAO",2000000);
-                db.transaction(populateDB, errorCB, successCB);
-            }
-            function populateDB(tx){
-                tx.executeSql('DROP TABLE IF EXISTS AnimVAO');
-                tx.executeSql('CREATE TABLE AnimVAO(id INTEGER PRIMARY KEY ASC, animes)');
-                tx.executeSql('INSERT INTO AnimVAO(id, animes) VALUES(1,"https://www.blogger.com/video-play.mp4?contentId=1e2d5b3167d47567")');
-                tx.executeSql('INSERT INTO AnimVAO(id, animes) VALUES(2,"https://www.blogger.com/video-play.mp4?contentId=1e2d5b3167d47567")');
-            }
-            function errorCB(err){
-                alert("erro: "+err.code)
-            }
-            function successCB(){
-                alert("Sucesso");
-            }
-            function show(){
-                var db = window.openDatabase("Database","1.0","BancoVAO",2000000);
-                db.transaction(mostrarCadastro,errorCB)
-            }
-            function mostrarCadastro(tx){
-                tx.executeSql('SELECT * FROM AnimVAO', [], sucesso, errorCB)
-            }
-            function sucesso(tx, results){
-                var len = results.rows.length;
-                alert(len+" linhas encontradas");
-                for (var i = 0; i<len; i++) {
-                    //alert("ID: "+results.rows.item(i).id + " Link: "+results.rows.item(i).animes);
-                    document.getElementById('aparece').innerHTML += "<br>ID: "+results.rows.item(i).id + " <video width='320' height='240' controls><source src='"+results.rows.item(i).animes+"' type='video/mp4'Your browser does not support the video tag.</video>";
-                }
-            }
-            function esconder(){
-                document.getElementById('aparece').innerHTML = "";
-            }
-        </script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        
+        <title>VAO</title>
     </head>
     <body>
-
-    <h1>OLLLAAAA WORLDD</h1>
-    <button onclick="show()">Mostrar</button>
-    <button onclick="esconder()">Esconder</button>
-    <div id="aparece">
         
-    </div>
+        <div id="telaRegistrarFilmen" class="page page-active">
+            <input type="text" placeholder="Insira seu login">
+            <input id="link" type="text"  placeholder="Insira o link do anime">
+            <input id="idAnim" type="text"  placeholder="Insira o id para deletar">
+            <button  onclick="show()">Mostrar</button>
+            <button  onclick="esconder()">Esconder</button>
+             <input type="button" value="Adicionar" onclick="adicionar()">
+              <input type="button" value="Deletar" onclick="deletar()">
+
+              <input type="button" value="Logar" class="targetPage" dt-page="#telalogin">
+        <div id="aparece"></div>
+        </div>
+            
+        <div id="telalogin" class="page">
+            <div class="painel-login">
+                <div class="painel-herder">
+                    <img class="fotoLogin" src="img/login.png">
+                </div>
+                <div class="form-group left-inner-addon">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <input type="text" class="form-control" placeholder="Usuário">
+                </div>
+                <div class="form-group left-inner-addon">
+                    <i class="glyphicon glyphicon-lock"></i>
+                    <input type="password" class="form-control" placeholder="Senha">
+                </div>
+                <button class="btn btn-primary targetPage" dt-page="#telainicio">Entrar</button>
+                <button class="btn btn-success targetPage" dt-page="#telaCadastro">Criar conta</button>
+                </div>
+
+         </div>
+		<div id="telainicio" class="page">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>                        
+              </button>
+              <a style="color: white" class="navbar-brand">VAO</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="#myPage">Animes de A-Z</a></li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Categoria/Gênero
+                  <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Shounen</a></li>
+                    <li><a href="#">Seinen</a></li>
+                    <li><a href="#">Shōjo</a></li>
+                    <li><a href="#">Josei</a></li>
+                    <li><a href="#">Kodomo</a></li>
+                  </ul>
+                </li>
+                <li><a href="#tour">Faça Login</a></li>
+                <li><a href="#contact">Contate-nos</a></li>
+                
+                <li><a href="#"><span class="glyphicon glyphicon-search"></span></a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+		<div class="listAnim">
+        <!--limete de 10 animes por div wrapper -->
+        <h3>Animes de A-Z</h3>
+        <div class="wrapper">
+          <div class="wrapper_child">
+            <div id="home" class="tab">
+                <a class="targetPage" dt-page="#telaplayer"><img class="imageLink"src="img/fundo.jpg"></a>
+            </div>
+            <div id="gallery" class="tab">
+              <h3 class="text-center align-middle">Gallery</h3>
+            </div>
+            <div id="about" class="tab">
+              <h3 class="text-center align-middle">About us</h3>
+            </div>
+            <div id="contacts" class="tab">
+              <h3 class="text-center align-middle">Contacts</h3>
+            </div><div id="home" class="tab">
+              <h3 class="text-center align-middle">Home</h3>
+            </div>
+            <div id="gallery" class="tab">
+              <h3 class="text-center align-middle">Gallery</h3>
+            </div>
+            <div id="about" class="tab">
+              <h3 class="text-center align-middle">About us</h3>
+            </div>
+            <div id="contacts" class="tab">
+              <h3 class="text-center align-middle">Contacts</h3>
+            </div>
+            <div id="home" class="tab">
+              <h3 class="text-center align-middle">Home</h3>
+            </div>
+            <div id="gallery" class="tab">
+              <h3 class="text-center align-middle">Gallery</h3>
+            </div>
+            <div id="about" class="tab">
+              <h3 class="text-center align-middle">About us</h3>
+            </div>
+            <div id="contacts" class="tab">
+              <h3 class="text-center align-middle">Contacts</h3>
+            </div>
+            <div id="home" class="tab">
+              <h3 class="text-center align-middle">Home</h3>
+            </div>
+            <div id="gallery" class="tab">
+              <h3 class="text-center align-middle">Gallery</h3>
+            </div>
+            <div id="about" class="tab">
+              <h3 class="text-center align-middle">About us</h3>
+            </div>
+            <div id="contacts" class="tab">
+              <h3 class="text-center align-middle">Contacts</h3>
+            </div>
+ 
+          </div>
+        </div>
+
+        <h3>Animes de A-Z</h3>
+        <div class="wrapper">
+          <div class="wrapper_child">
+            <div id="home" class="tab">
+              <h3 class="text-center align-middle">Home</h3>
+            </div>
+            <div id="gallery" class="tab">
+              <h3 class="text-center align-middle">Gallery</h3>
+            </div>
+            <div id="about" class="tab">
+              <h3 class="text-center align-middle">About us</h3>
+            </div>
+            <div id="contacts" class="tab">
+              <h3 class="text-center align-middle">Contacts</h3>
+            </div>
+          </div>
+        </div>
+        <h3>Animes de A-Z</h3>
+        <div class="wrapper">
+          <div class="wrapper_child">
+            <div id="home" class="tab">
+              <h3 class="text-center align-middle">Home</h3>
+            </div>
+            <div id="gallery" class="tab">
+              <h3 class="text-center align-middle">Gallery</h3>
+            </div>
+            <div id="about" class="tab">
+              <h3 class="text-center align-middle">About us</h3>
+            </div>
+            <div id="contacts" class="tab">
+              <h3 class="text-center align-middle">Contacts</h3>
+            </div>
+          </div>
+        </div>
+        <h3>Animes de A-Z</h3>
+        <div class="wrapper">
+          <div class="wrapper_child">
+            <div id="home" class="tab">
+              <h3 class="text-center align-middle">Home</h3>
+            </div>
+            <div id="gallery" class="tab">
+              <h3 class="text-center align-middle">Gallery</h3>
+            </div>
+            <div id="about" class="tab">
+              <h3 class="text-center align-middle">About us</h3>
+            </div>
+            <div id="contacts" class="tab">
+              <h3 class="text-center align-middle">Contacts</h3>
+            </div>
+          </div>
+        </div>
+        <h3>Animes de A-Z</h3>
+        <div class="wrapper">
+          <div class="wrapper_child">
+            <div id="home" class="tab">
+              <h3 class="text-center align-middle">Home</h3>
+            </div>
+            <div id="gallery" class="tab">
+              <h3 class="text-center align-middle">Gallery</h3>
+            </div>
+            <div id="about" class="tab">
+              <h3 class="text-center align-middle">About us</h3>
+            </div>
+            <div id="contacts" class="tab">
+              <h3 class="text-center align-middle">Contacts</h3>
+            </div>
+          </div>
+        </div>
+        <h3>Animes de A-Z</h3>
+        <div class="wrapper">
+          <div class="wrapper_child">
+            <div id="home" class="tab">
+              <h3 class="text-center align-middle">Home</h3>
+            </div>
+            <div id="gallery" class="tab">
+              <h3 class="text-center align-middle">Gallery</h3>
+            </div>
+            <div id="about" class="tab">
+              <h3 class="text-center align-middle">About us</h3>
+            </div>
+            <div id="contacts" class="tab">
+              <h3 class="text-center align-middle">Contacts</h3>
+            </div>
+          </div>
+        </div>
+        <h3>Animes de A-Z</h3>
+        <div class="wrapper">
+          <div class="wrapper_child">
+            <div id="home" class="tab">
+              <h3 class="text-center align-middle">Home</h3>
+            </div>
+            <div id="gallery" class="tab">
+              <h3 class="text-center align-middle">Gallery</h3>
+            </div>
+            <div id="about" class="tab">
+              <h3 class="text-center align-middle">About us</h3>
+            </div>
+            <div id="contacts" class="tab">
+              <h3 class="text-center align-middle">Contacts</h3>
+            </div>
+          </div>
+        </div>
+        </div>
+        
+        </div>
+        <div id="telaload" class="page">
+           <img class="img-load"src="img/cubeload.svg">
+        </div>
+        <div id="telaCadastro" class="page">
+          <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="aCad"style="color: white; font-size: 35px;">Cadastre-se</a>
+              <button type="button" class="navbar-toggle targetPage" dt-page="#telalogin" data-toggle="collapse" data-target="#myNavbar">
+                    <i style="color: white;" class="glyphicon glyphicon-chevron-left"></i>
+              </button>
+            </div>
+          </div>
+          </nav>
+            <div class="painel-cadastro">
+                <div class="painel-herder">
+                    <img class="fotoLogin" src="img/login.png">
+                </div>
+                <div class="form-group left-inner-addon">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <input type="text" class="form-control" placeholder="Usuário">
+                </div>
+                <div class="form-group left-inner-addon">
+                    <i class="glyphicon glyphicon-lock"></i>
+                    <input type="password" class="form-control" placeholder="Senha">
+                </div>
+                <div class="form-group left-inner-addon">
+                    <i class="glyphicon glyphicon-globe"></i>
+                    <input type="email" class="form-control" placeholder="E-mail">
+                </div>
+                <button style="width: 100%" class="btn btn-cad targetPage" dt-page="#telainicio">Cadastrar</button>
+                </div>
+         </div>
+        <div id="telaplayer" class="page">
+            <h2>TELAPLAYER</h2>
+            <button  onclick="show()">Mostrar</button>
+            <div id="aparece2"></div>
+            </div>
+        </div>
+        
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
+        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="js/function.js"></script>
     </body>
 </html>

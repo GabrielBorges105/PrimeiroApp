@@ -1,0 +1,9 @@
+site base: https://www.anitube.site/145/
+
+site ensinando conexao com o bando de dados: https://www.caelum.com.br/apostila-html-css-javascript/apendice-php-banco-de-dados-e-sql/#mysql-e-phpmyadmin
+
+cordova/nodejs : https://nodejs.org/en/
+
+dicas de app:  https://www.aplicativosgratis.com.br/os-5-melhores-aplicativos-para-assistir-filmes/
+
+video como criar com cordova: https://www.youtube.com/watch?v=yVJuOKwRcjM
