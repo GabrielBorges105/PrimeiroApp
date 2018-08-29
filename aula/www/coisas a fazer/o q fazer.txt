@@ -1,4 +1,0 @@
-acho que deve instalar pelo node.js a biblioteca do bootstrap
-comando :npm install bootstrap
-
-site aprendendo a trabalhar com o scroll: https://pt.stackoverflow.com/questions/68928/como-estilizar-a-barra-de-rolagem
